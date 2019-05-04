@@ -1,7 +1,7 @@
-$( "#js-shopping-list-form" ).submit(function( event ) {
-    event.preventDefault();
-    let inputValue = $( "#shopping-list-entry" ).val()
-    $("ul").append(`<li>
+$("#js-shopping-list-form").submit(function(event) {
+  event.preventDefault();
+  let inputValue = $("#shopping-list-entry").val();
+  let ul = $("ul").append(`<li>
     <span class="shopping-item">${inputValue}</span>
     <div class="shopping-item-controls">
       <button class="shopping-item-toggle">
@@ -12,5 +12,23 @@ $( "#js-shopping-list-form" ).submit(function( event ) {
       </button>
     </div>
   </li>`);
-    console.log($( "#shopping-list-entry" ).val());
-  });
+  console.log($("#shopping-list-entry").val());
+});
+
+$("ul").on("click", "button", function(e) {
+  if ($(this).hasClass("shopping-item-toggle")) {
+    console.log("check clicked");
+    console.log(this);
+    // $(this)
+    //   .closest("span")
+    //   .addClass(".shopping-item__checked");
+    $(this)
+      .closest("li")
+      .children(".shopping-item")
+      .toggleClass("shopping-item__checked");
+  }
+
+  if ($(this).hasClass("shopping-item-delete")) {
+    console.log("delete clicked");
+  }
+});
