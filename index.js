@@ -12,22 +12,15 @@ $("#js-shopping-list-form").submit(function(event) {
       </button>
     </div>
   </li>`);
-  console.log($("#shopping-list-entry").val());
 });
 
 $("ul").on("click", "button", function(e) {
   if ($(this).hasClass("shopping-item-toggle")) {
-    console.log("check clicked");
-    console.log(this);
-    // $(this)
-    //   .closest("span")
-    //   .addClass(".shopping-item__checked");
     $(this)
       .closest("li")
       .children(".shopping-item")
       .toggleClass("shopping-item__checked");
   }
-
   if ($(this).hasClass("shopping-item-delete")) {
     $(this)
       .closest("li")
