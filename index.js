@@ -29,6 +29,8 @@ $("ul").on("click", "button", function(e) {
   }
 
   if ($(this).hasClass("shopping-item-delete")) {
-    console.log("delete clicked");
+    $(this)
+      .closest("li")
+      .remove();
   }
 });
