@@ -45,6 +45,11 @@ function renderShoppingList() {
   $('.js-shopping-list').html(shoppingListItemsString);
 }
 
+function addItemToShoppingList(itemName){
+  // This function will add a new object to the STORE array.
+  console.log(`Adding "${itemName}" to shopping list`);
+  STORE.push({name: itemName, checked: false});
+}
 
 function handleNewItemSubmit() {
   // This function will be responsible for when users click the "submit" button
@@ -52,9 +57,29 @@ function handleNewItemSubmit() {
   // clicked the submit button and retrieve the value of the input field. 
   // It will then push the value of the input field to the STORE array and
   // call the renderShoppingList function to display the HTML with the new item.
-  console.log('`handleNewItemSubmit` ran');
+  $('#js-shopping-list-form').submit(function(event) {
+    event.preventDefault();
+    console.log('`handleNewItemSubmit` ran');
+    const newItemName = $('.js-shopping-list-entry').val();
+    $('.js-shopping-list-entry').val('');
+    addItemToShoppingList(newItemName);
+    renderShoppingList();
+  });
 }
 
+function toggleCheckedForListItem(itemId) {
+  // This function will toggle the checked property of an item in STORE
+  console.log("Toggling checked property for item with id " + itemId);
+  const item = STORE.find(item => item.id === itemId);
+  item.checked = !item.checked;
+} 
+
+function getItemIdFromElement(item) {
+  // This function will return the item id from the closest li element.
+  return $(item)
+    .closest('li')
+    .data('item-id');
+}
 
 function handleItemCheckClicked() {
   // This function will be responsible for when users click the "check" button on
@@ -62,9 +87,17 @@ function handleItemCheckClicked() {
   // which item has been selected for "check". After the event has been triggered it 
   // will class toggle the item to add or remove the checked class. It will then call
   // the renderShoppingList function to display the HTML with the item checked or unchecked. 
-  console.log('`handleItemCheckClicked` ran');
+  $('.js-shopping-list').on('click', `.js-item-toggle`, event => {
+    console.log('`handleItemCheckClicked` ran');
+    const id = getItemIdFromElement(event.currentTarget);
+    toggleCheckedForListItem(id)
+    renderShoppingList();
+  });
 }
 
+function removeItemFromList(){
+  // This function will delete delete an item from list
+}
 
 function handleDeleteItemClicked() {
   // This function will be responsible for when users want to delete a shopping list
@@ -96,7 +129,9 @@ window.onload = function() {
 function addItem(){
   $("#js-shopping-list-form").submit(function(event) {
     event.preventDefault(); // disable default submit action
-    const inputValue = event.target['shopping-list-entry'].value; //set value of input after submit
+    const inputValue = event
+      .target['shopping-list-entry']
+      .value; //set value of input after submit
     $("ul").append(`<li>
       <span class="shopping-item">${inputValue}</span>
       <div class="shopping-item-controls">
@@ -114,7 +149,10 @@ function addItem(){
 function updateItem(){
   $("ul").on("click", "button", function(e) {
     if ($(this).hasClass("shopping-item-toggle")) {
-      $(this).closest("li").find(".shopping-item").toggleClass("shopping-item__checked");
+      $(this)
+        .closest("li")
+        .find(".shopping-item")
+        .toggleClass("shopping-item__checked");
     }
     else if ($(this).hasClass("shopping-item-delete")) { //else if for optimization
       $(this).closest("li").remove();
