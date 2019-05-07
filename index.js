@@ -48,7 +48,7 @@ function renderShoppingList() {
 function addItemToShoppingList(itemName){
   // This function will add a new object to the STORE array.
   console.log(`Adding "${itemName}" to shopping list`);
-  STORE.push({name: itemName, checked: false});
+  STORE.push({id: cuid(), name: itemName, checked: false});
 }
 
 function handleNewItemSubmit() {
@@ -90,13 +90,16 @@ function handleItemCheckClicked() {
   $('.js-shopping-list').on('click', `.js-item-toggle`, event => {
     console.log('`handleItemCheckClicked` ran');
     const id = getItemIdFromElement(event.currentTarget);
-    toggleCheckedForListItem(id)
+    toggleCheckedForListItem(id);
     renderShoppingList();
   });
 }
 
-function removeItemFromList(){
+function removeItemFromList(itemId){
   // This function will delete delete an item from list
+  console.log("Deleting item from list with id " + itemId);
+  const index = STORE.findIndex(item => item.id === itemId);
+  STORE.splice(index, 1);
 }
 
 function handleDeleteItemClicked() {
@@ -104,7 +107,12 @@ function handleDeleteItemClicked() {
   // item. This function will listen for the on click event and identify which item is to 
   // be removed. It will then remove the item from the STORE array and call the
   // renderShoppingList function to display the HTML with the item removed.
+  $('.js-shopping-list').on('click', `.js-item-delete`, event => {
   console.log('`handleDeleteItemClicked` ran')
+  const itemId = getItemIdFromElement(event.currentTarget);
+  removeItemFromList(itemId);
+  renderShoppingList();
+  });
 }
 
 // this function will be our callback when the page loads. it's responsible for
