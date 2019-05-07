@@ -1,35 +1,76 @@
+'use strict'; //enable JS strict mode
+
 // Object of todoList
-const todoList = [
-  {name: "apples", checked: false},
-  {name: "oranges", checked: false},
-  {name: "milk", checked: true},
-  {name: "bread", checked: false}
+const STORE = [
+  {id: cuid(), name: "apples", checked: false},
+  {id: cuid(), name: "oranges", checked: false},
+  {id: cuid(), name: "milk", checked: true},
+  {id: cuid(), name: "bread", checked: false}
 ];
 
+function generateItemElement(item){
+  // this function creates each list item element
+  return `
+    <li data-item-id="${item.id}">
+      <span class="shopping-item js-shopping-item ${item.checked ? "shopping-item__checked" : ''}">${item.name}</span>
+      <div class="shopping-item-controls">
+        <button class="shopping-item-toggle js-item-toggle">
+            <span class="button-label">check</span>
+        </button>
+        <button class="shopping-item-delete js-item-delete">
+            <span class="button-label">delete</span>
+        </button>
+      </div>
+    </li>`;
+}
+
+function generateShoppingItemsString(shoppingList) {
+  // this function will return a string of the shoppingList items with the required HTML
+  // for the list
+  console.log("Generating shopping list element");
+
+  const items = shoppingList.map((item) => generateItemElement(item));
+
+  return items.join("");
+
+}
 
 function renderShoppingList() {
   // this function will be responsible for rendering the shopping list in
   // the DOM
   console.log('`renderShoppingList` ran');
+  const shoppingListItemsString = generateShoppingItemsString(STORE);
+
+  // inserting function HTML into DOM
+  $('.js-shopping-list').html(shoppingListItemsString);
 }
 
 
 function handleNewItemSubmit() {
-  // this function will be responsible for when users add a new shopping list item
+  // This function will be responsible for when users click the "submit" button
+  // for adding a shopping list item. This function will detect that the user has 
+  // clicked the submit button and retrieve the value of the input field. 
+  // It will then push the value of the input field to the STORE array and
+  // call the renderShoppingList function to display the HTML with the new item.
   console.log('`handleNewItemSubmit` ran');
 }
 
 
 function handleItemCheckClicked() {
-  // this function will be responsible for when users click the "check" button on
-  // a shopping list item.
+  // This function will be responsible for when users click the "check" button on
+  // a shopping list item. This function will listen for the on click event and identify 
+  // which item has been selected for "check". After the event has been triggered it 
+  // will class toggle the item to add or remove the checked class. It will then call
+  // the renderShoppingList function to display the HTML with the item checked or unchecked. 
   console.log('`handleItemCheckClicked` ran');
 }
 
 
 function handleDeleteItemClicked() {
-  // this function will be responsible for when users want to delete a shopping list
-  // item
+  // This function will be responsible for when users want to delete a shopping list
+  // item. This function will listen for the on click event and identify which item is to 
+  // be removed. It will then remove the item from the STORE array and call the
+  // renderShoppingList function to display the HTML with the item removed.
   console.log('`handleDeleteItemClicked` ran')
 }
 
